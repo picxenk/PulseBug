@@ -1,6 +1,6 @@
 /*******************************************************************
-  Pulse Pendant
-  http://xenbio.net/mdwiki/#!pulse_pendant.md
+  PulseBug
+  http://xenbio.net/mdwiki/#!pulse_bug.md
 
   The Artistic License 2.0
   Copyright (c) 2014 SeungBum Kim <picxenk@gmail.com>
