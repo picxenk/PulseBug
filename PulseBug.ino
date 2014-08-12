@@ -7,12 +7,14 @@
   license details at : http://choosealicense.com/licenses/artistic/
 *******************************************************************/
 
+#include <EEPROM.h>
+
 const int buttonPin = 0;
 const int ledPin = 1;
 int fade = 20;
 
+int beat;
 int brightness = 0;
-int beat = 60;
 int buttonPulseStep = 0;
 int pulseThreshold = 1700;
 
@@ -30,7 +32,11 @@ void setup() {
   digitalWrite(buttonPin, HIGH); //internal pull-up
   pinMode(ledPin, OUTPUT);
   Serial.begin(9600);
+  
+  beat = loadBeat();
+  if (beat < 1) beat = 60;
 }
+
 
 void loop() {
   cTime = millis();
@@ -49,14 +55,16 @@ void loop() {
     
     if (buttonPulseStep < pulseThreshold) {
       beat = int(60000 / buttonPulseStep);
+      saveBeat(beat);
     }
     buttonClicked = false;
   }
   
   beatPulse(beat);
-
 }
 
+
+/*** commands ***/
 void beatPulse(int beat) {  
   if (brightness == 0) {
     fade = 20;
@@ -72,3 +80,13 @@ void beatPulse(int beat) {
   }
 }
 
+
+void saveBeat(int beat) {
+  int val = min(beat, 255);
+  EEPROM.write(0, val);
+}
+
+
+int loadBeat() {
+  return int(EEPROM.read(0));
+}
